@@ -37,13 +37,15 @@ const LearnerDashboard = () => {
           headers: { Authorization: `Bearer ${token}` }
         };
         // Send GET request to the API endpoint
-        const response = await axios.get(`${base_adobe_url}/learningObjects?page[limit]=100&filter.learnerState=completed&sort=name&filter.ignoreEnhancedLP=true`, config);
+        const response = await axios.get(`${base_adobe_url}/enrollments?include=learningObject&page[limit]=10&filter.completed=true&includeHierarchicalEnrollments=false&sort=dateEnrolled`,config);
+        
+        // "/learningObjects?page[limit]=100&filter.learnerState=completed&sort=name&filter.ignoreEnhancedLP=true`, config);
   
         // Handle success response
         console.log('ALM Response:', response.data);
-        const almHours = response.data?.data?.reduce((acc, course) => acc + parseInt(course?.attributes?.duration)/3600, 0);
+        const almHours = response.data?.included?.reduce((acc, course) => acc + parseInt(course?.attributes?.duration)/3600, 0);
         setAlmHours(almHours);
-        setAlmCourses(response.data.data);
+        setAlmCourses(response.data.included);
       } catch (error) {
         // Handle error
         console.error('Error:', error);
