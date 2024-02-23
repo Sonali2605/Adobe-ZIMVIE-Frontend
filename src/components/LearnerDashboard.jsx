@@ -108,7 +108,7 @@ const LearnerDashboard = () => {
                                     <tr key={index}>
                                         <td style={{ width: '45%' }}>{course?.title}</td>
                                         <td style={{ width: '15%' }}>{new Date(course?.date).toISOString().split('T')[0]}</td>
-                                        <td style={{ width: '15%' }}>{course?.totalhours}</td>
+                                        <td style={{ width: '15%',textAlign:"right" }}>{course?.totalhours}</td>
                                         <td style={{ width: '15%' }}>Completed</td>
                                     </tr>
                                 ))}
@@ -138,7 +138,7 @@ const LearnerDashboard = () => {
                                 <tr key={index}>
                                     <td style={{ width: '45%' }}>{course?.attributes?.localizedMetadata[0].name}</td>
                                     <td style={{ width: '15%' }}>{new Date(course?.attributes?.effectiveModifiedDate).toISOString().split('T')[0]}</td>
-                                    <td style={{ width: '15%' }}>{(course?.attributes?.duration)/3600}</td>
+                                    <td style={{ width: '15%',textAlign:"right" }}>{(course?.attributes?.duration)/3600}</td>
                                     <td style={{ width: '15%' }}>Completed</td>
                                 </tr>
                             ))}
