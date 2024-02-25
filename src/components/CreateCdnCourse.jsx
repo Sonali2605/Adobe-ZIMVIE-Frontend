@@ -35,9 +35,6 @@ export const CreateCdnCourse = ({ closeModal }) => {
         try {
             // Send POST request to the API endpoint
             const response = await axios.post(`${base_url}/cpdData`, dataToSend);
-
-            // Handle success response
-            console.log('Response:', response.data);
             closeModal();
         } catch (error) {
             // Handle error
@@ -129,11 +126,11 @@ export const CreateCdnCourse = ({ closeModal }) => {
                     <input
                         type="text"
                         name="totalhours"
-                        placeholder="Total hours spent"
+                        placeholder="Hours spent"
                         value={formData.totalhours}
                         onChange={handleChange}
                     />
-                    <button  className="buttonModel" type="submit">Add Course</button>
+                    <button  className="buttonModel" type="submit">Save</button>
                 </form>
             </div>
         </div>

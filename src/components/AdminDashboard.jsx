@@ -73,25 +73,25 @@ const AdminDashboard = () => {
                 fullname: user.fullname,
                 email: user.email,
                 totalCpdHours: user.courses.reduce((acc, course) => acc + parseInt(course.totalhours), 0),
-                totalAlmHours: 0 // Initialize total ALM hours here
+                totalAlmHours: user.almCourseDuration// Initialize total ALM hours here
             }));
             
             // Iterate over usersData to fetch ALM hours for each user
-            for (let i = 0; i < usersData.length; i++) {
-                try {
-                    const userId = usersData[i].userId;
-                    const token = localStorage.getItem("token");
-                    const config = {
-                        headers: { Authorization: `Bearer ${token}` }
-                    };
-                    const userDataResponse = await axios.get(`${base_adobe_url}/users/${userId}/enrollments?include=learningObject&page[limit]=10&sort=dateEnrolled`, config);
-                    console.log(`User Data for User ID ${userId}:`, userDataResponse.data);
-                    const learningObjectDurations = userDataResponse.data.included.reduce((acc, item) => acc + (item.attributes.duration) / 3600, 0);
-                    usersData[i].totalAlmHours = learningObjectDurations;
-                } catch (error) {
-                    console.error(`Error fetching user data for User ID ${userId}:`, error);
-                }
-            }
+            // for (let i = 0; i < usersData.length; i++) {
+            //     try {
+            //         const userId = usersData[i].userId;
+            //         const token = localStorage.getItem("token");
+            //         const config = {
+            //             headers: { Authorization: `Bearer ${token}` }
+            //         };
+            //         const userDataResponse = await axios.get(`${base_adobe_url}/users/${userId}/enrollments?include=learningObject&page[limit]=10&sort=dateEnrolled`, config);
+            //         console.log(`User Data for User ID ${userId}:`, userDataResponse.data);
+            //         const learningObjectDurations = userDataResponse.data.included.reduce((acc, item) => acc + (item.attributes.duration) / 3600, 0);
+            //         usersData[i].totalAlmHours = learningObjectDurations;
+            //     } catch (error) {
+            //         console.error(`Error fetching user data for User ID ${userId}:`, error);
+            //     }
+            // }
             
             setUsersData(usersData); // Update the state after fetching ALM hours for all users
         } catch (error) {
@@ -103,14 +103,14 @@ const AdminDashboard = () => {
         <Header/>
         <h2>Admin Dashboard</h2>
         <div className="user-info" style={{marginTop:"10px"}}>
-                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Completed Course Report for Admin</h3>
+                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Learner Progress Report for Admin​</h3>
                 <table className="table">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Hours spent on CPD courses</th>
-                            <th>Hours spent on ALM courses</th>
+                            <th>Hours Spent on CPD Courses</th>
+                            <th>Hours Spent on ALM Courses​</th>
                         </tr>
                     </thead>
                     <tbody>
