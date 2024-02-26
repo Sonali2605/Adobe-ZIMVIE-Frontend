@@ -136,7 +136,7 @@ input {
 .buttonModel {
     padding: 10px 20px;
     background-color: #ff5252;
-    color: #000;
+    color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
