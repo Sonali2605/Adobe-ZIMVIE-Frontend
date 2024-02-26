@@ -110,7 +110,6 @@ const AdminDashboard = () => {
                             <th>Name</th>
                             <th>Email</th>
                             <th>Hours Spent on CPD Courses</th>
-                            <th>Hours Spent on ALM Courses​</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +118,6 @@ const AdminDashboard = () => {
                                 <td>{userData.fullname}</td>
                                 <td>{userData.email}</td>
                                 <td style={{textAlign:"right"}}>{userData.totalCpdHours}</td>
-                                <td style={{textAlign:"right"}}>{userData.totalAlmHours}</td>
                             </tr>
                         ))}
                     </tbody>

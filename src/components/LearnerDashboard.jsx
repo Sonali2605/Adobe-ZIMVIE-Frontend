@@ -80,6 +80,7 @@ const LearnerDashboard = () => {
             </div>
             {isModelOpen && <CreateCdnCourse closeModal={toggleModel} />}
             <div className="user-info">
+
                 <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Learner Progress Report</h3>
                 <p className="mainInfo"><strong>Name:</strong> {cpdCourses?.user?.fullname}</p>
                 <p className="mainInfo"><strong>Email:</strong> {cpdCourses?.user?.email}</p>
@@ -112,7 +113,7 @@ const LearnerDashboard = () => {
                         </table>
                     </div>
                 ):expanded &&(<div  className="noData">No Courses Found</div>)}
-                <button className={`btn ${expandedAlm ? 'expanded accordianCollapse' : ''}`}  onClick={toggleExpandedAlm}>
+                {/* <button className={`btn ${expandedAlm ? 'expanded accordianCollapse' : ''}`}  onClick={toggleExpandedAlm}>
                     ALM Courses - <span style={{fontSize:"10px"}}>{almHours} Hours</span>
                     <span className={`arrow ${expandedAlm ? 'expanded ' : ''}`}></span>
                 </button>
@@ -140,7 +141,7 @@ const LearnerDashboard = () => {
                         </tbody>
                     </table>
                 </div>
-            ): expandedAlm &&(<div className="noData">No Cources Found</div>)}
+            ): expandedAlm &&(<div className="noData">No Cources Found</div>)} */}
             </div>
         </div>
     )
