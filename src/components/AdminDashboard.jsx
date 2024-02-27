@@ -109,7 +109,7 @@ const AdminDashboard = () => {
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Hours Spent on CPD Courses</th>
+                            <th style ={{textAlign:"right"}}>Hours Spent on CPD Courses</th>
                         </tr>
                     </thead>
                     <tbody>

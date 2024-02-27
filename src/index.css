@@ -39,12 +39,15 @@ body{
 
 .table th,
 .table td {
-    border: 1px solid #ddd;
-    padding: 5px;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 15px;
     text-align: left;
     font-size: 12px;
 }
-
+.table tr {
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+}
 .table th {
     background-color: #f2f2f2;
 }

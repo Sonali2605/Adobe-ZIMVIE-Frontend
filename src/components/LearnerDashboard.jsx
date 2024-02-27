@@ -21,7 +21,7 @@ const LearnerDashboard = () => {
       if (userId && authToken) {
           localStorage.setItem('userId', userId);
           localStorage.setItem('token', authToken);
-          almCourcesCall();
+          // almCourcesCall();
           learnerApiCall(userId);
       }
       return () => {
@@ -29,6 +29,14 @@ const LearnerDashboard = () => {
         localStorage.removeItem('token');
     };
     }, []);
+
+    useEffect(()=>{
+      const fetchData = async () => {
+        await learnerApiCall(localStorage.getItem('userId'));
+    };
+
+    fetchData();
+}, [isModelOpen]);
 
     const almCourcesCall= async()=>{
       try {
@@ -96,8 +104,8 @@ const LearnerDashboard = () => {
                                 <tr>
                                 <th style={{ width: '45%' }}>Title</th>
             <th style={{ width: '15%' }}>Date</th>
-            <th style={{ width: '15%' }}>Hours Spent</th>
-            <th style={{ width: '15%' }}>Status</th>
+            <th style={{ width: '10%', textAlign:"right"}}>Hours Spent</th>
+            <th style={{ width: '20%', paddingLeft: '40px' }}>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,7 +114,7 @@ const LearnerDashboard = () => {
                                         <td style={{ width: '45%' }}>{course?.title}</td>
                                         <td style={{ width: '15%' }}>{new Date(course?.date).toISOString().split('T')[0]}</td>
                                         <td style={{ width: '15%',textAlign:"right" }}>{course?.totalhours}</td>
-                                        <td style={{ width: '15%' }}>Completed</td>
+                                        <td style={{ width: '15%', paddingLeft: '40px'  }}>Completed</td>
                                     </tr>
                                 ))}
                             </tbody>
