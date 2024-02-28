@@ -89,7 +89,7 @@ const LearnerDashboard = () => {
             {isModelOpen && <CreateCdnCourse closeModal={toggleModel} />}
             <div className="user-info">
 
-                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Learner Progress Report</h3>
+                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Progress Report</h3>
                 <p className="mainInfo"><strong>Name:</strong> {cpdCourses?.user?.fullname}</p>
                 <p className="mainInfo"><strong>Email:</strong> {cpdCourses?.user?.email}</p>
                 <button className={`btn ${expanded ? 'expanded accordianCollapse' : ''}`} onClick={toggleExpanded}>

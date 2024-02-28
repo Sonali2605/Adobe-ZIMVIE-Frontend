@@ -71,7 +71,7 @@ export const CreateCdnCourse = ({ closeModal }) => {
         <div className="modal-overlay">
             <div className="modal" style={{overflow:"auto"}}>
                 <span className="close" onClick={closeModal}>&times;</span>
-                <h4 className="modal-heading"> Add CPD Course</h4>
+                <h4 className="modal-heading">CPD Learning Details</h4>
                 <form style={{"fontSize":"14px" ,overflow:"auto", maxHeight:"80vh"}}onSubmit={handleSubmit}>
                     {error && <p className="error">{error}</p>}
                     <Label style={{textAlign:"center"}}>Before you begin</Label><br/>

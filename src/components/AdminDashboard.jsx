@@ -103,7 +103,7 @@ const AdminDashboard = () => {
         <Header/>
         <h2>Admin Dashboard</h2>
         <div className="user-info" style={{marginTop:"10px"}}>
-                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Learner Progress Report for Admin​</h3>
+                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Progress Report for Learners</h3>
                 <table className="table">
                     <thead>
                         <tr>
