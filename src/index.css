@@ -124,12 +124,15 @@ form {
     flex-direction: column;
 }
 
-input {
+input, textarea {
     margin-bottom: 8px;
-    padding: 5px;
+    padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 12px;
+}
+.disabledText {
+    color: #A1A0A3;
 }
 .noData{
     font-size: 14px;
@@ -148,7 +151,7 @@ input {
 }
 .modal-heading {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 .mainInfo{
     font-size: 14px;

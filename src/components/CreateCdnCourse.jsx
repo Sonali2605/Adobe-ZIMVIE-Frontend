@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { base_url, base_adobe_url } from './AppConfig';
+import { Label } from "reactstrap";
 
 export const CreateCdnCourse = ({ closeModal }) => {
     const [formData, setFormData] = useState({
@@ -57,8 +58,9 @@ export const CreateCdnCourse = ({ closeModal }) => {
             // Update formData state with the received data
             setFormData(prevFormData => ({
                 ...prevFormData,
+                before_you_begin: "In order to be added to your record, all information must be completed. Please complete a separate form for each activity undertaken. For queries relating to CPD please contact learningdevelopment@macfarlanes.com.",
                 fullname: name,
-                email: email
+                email: email,
             }));
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -67,17 +69,18 @@ export const CreateCdnCourse = ({ closeModal }) => {
 
     return (
         <div className="modal-overlay">
-            <div className="modal">
+            <div className="modal" style={{overflow:"auto"}}>
                 <span className="close" onClick={closeModal}>&times;</span>
                 <h4 className="modal-heading"> Add CPD Course</h4>
-                <form style={{"fontSize":"14px"}}onSubmit={handleSubmit}>
+                <form style={{"fontSize":"14px" ,overflow:"auto", maxHeight:"80vh"}}onSubmit={handleSubmit}>
                     {error && <p className="error">{error}</p>}
-                    <input
-                        type="text"
+                    <Label style={{textAlign:"center"}}>Before you begin</Label><br/>
+                    <textarea
                         name="before_you_begin"
-                        placeholder="Before you begin"
+                        style={{ marginBottom: "30px", marginTop: "-10px",height:"60px", resize: "none", minHeight: "65px"}}
                         value={formData.before_you_begin}
-                        onChange={handleChange}
+                        className="disabledText"
+                        disabled
                     />
                     <input
                         type="text"
@@ -85,6 +88,7 @@ export const CreateCdnCourse = ({ closeModal }) => {
                         placeholder="Full Name"
                         value={formData.fullname}
                         onChange={handleChange}
+                        className="disabledText"
                         disabled
                     />
                     <input
@@ -93,6 +97,7 @@ export const CreateCdnCourse = ({ closeModal }) => {
                         placeholder="Email Id"
                         value={formData.email}
                         onChange={handleChange}
+                        className="disabledText"
                         disabled
                     />
                     <input
