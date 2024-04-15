@@ -98,7 +98,7 @@ const AllCourses = () => {
   };
 
   return (
-    <>
+    <>     
       <div className='mb-6'></div>
       {login ?
         <>
@@ -114,11 +114,11 @@ const AllCourses = () => {
         </>
       }
       <div className='px-6'>
-        <div>
+        <div style={{display: "flex", padding: "20px"}}>
           {login ?
-            <h1 className="text-2xl font-bold mb-4" > Welcome To 3Ds Learning Portal</h1>
+            <span className="text-2xl font-bold mb-4" style={{width: "80%"}}> Welcome To 3Ds Learning Portal</span>
             :
-            <h1 className="text-2xl font-bold mb-4 bg-primary text-white p-2" >All Courses</h1>
+            <span className="text-2xl font-bold mb-2 p-2" style={{width: "80%"}} >All Courses</span>
           }
 
           <input
@@ -127,18 +127,19 @@ const AllCourses = () => {
             value={searchQuery}
             onChange={handleSearch}
             className="form-control mb-4"
+            style={{ width: "25%", float: "right"}}
           />
         </div>
+        {showModal && <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={selectedCourseId} />}
         <div style={{ display: 'flex' }}>
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
             {filteredCourses.map((course) => (
               <CourseCard key={course.id} course={course} EnrollHandle={EnrollHandle} login={login} onClick={() => handleCardClick(course.id)} />
-            ))}
-          </div>
+            ))}          
+          </div>         
         </div>
       </div>
       {/* Render AddQuestionModal outside of the loop */}
-      {showModal && <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={selectedCourseId} />}
     </>
   );
 };

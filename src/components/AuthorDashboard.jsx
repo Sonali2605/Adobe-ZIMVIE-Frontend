@@ -100,14 +100,14 @@ const AuthorDashboard = () => {
         }
     };
   return (
-    <div className="container">
-        <Header/>
-        <h2>Author Dashboard</h2>
-        <div className="user-info" style={{marginTop:"10px"}}>
-                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Progress Report for Learners</h3>
-                <AllCourses/>
-            </div>
+    <div className="container" style={{width: '80%', margin: '0 auto', backgroundColor: '#f8f9fa', borderRadius: '10px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'}}>
+    <Header/>
+    <h2 style={{color: '#333', fontSize: '22px', marginTop: '0', fontWeight: "600"}}>Author Dashboard</h2>
+    <div className="user-info" style={{backgroundColor: '#fff', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)', marginTop: '10px'}}>
+        <h3 style={{fontWeight: '400', fontSize: '22px', marginTop: '0'}}>Progress Report for Learners</h3>
+        <AllCourses/>
     </div>
+</div>
   )
 }
 

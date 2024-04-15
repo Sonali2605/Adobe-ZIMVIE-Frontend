@@ -11,14 +11,15 @@ export const Header = () => {
 
 const headerStyle = {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center', // Center the items horizontally
+    width: "100%",
     padding: '1rem',
     borderBottom: '1px solid #ccc',
+    backgroundColor: 'white',
+    margin: "10px 0px"
   };
   
   const logoStyle = {
-    width: '15%', // Adjust the width as needed
+    width: '20%', // Adjust the width as needed
     height: 'auto', // Maintain aspect ratio
     marginRight: '1rem',
   };
