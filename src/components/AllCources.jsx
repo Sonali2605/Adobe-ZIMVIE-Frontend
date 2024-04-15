@@ -15,6 +15,8 @@ const AllCourses = () => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [showModal, setShowModal] = useState(false); 
   const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleFilterChange = (filterOption) => {
     setSelectedFilter(filterOption);
@@ -97,6 +99,25 @@ const AllCourses = () => {
     setShowModal(true);
   };
 
+  const hideQuestionModal = (message) =>{
+   setShowModal(false);
+   console.log("message", message)
+   if(message !== undefined){
+      setMessage(message)
+     setShowSuccessModal(true);
+   }
+  }
+
+  const closeQuestion = () => {
+    setMessage("")
+    setShowModal(false);
+  }
+
+  const closeConfirmation = () =>{
+    setShowSuccessModal(false);
+    setMessage("")
+  }
+
   return (
     <>
       <div className='mb-6'></div>
@@ -138,7 +159,21 @@ const AllCourses = () => {
         </div>
       </div>
       {/* Render AddQuestionModal outside of the loop */}
-      {showModal && <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={selectedCourseId} />}
+      {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
+      {showSuccessModal && (
+        <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-body">
+                <h5>{message}</h5>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-primary" onClick={closeConfirmation}>Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

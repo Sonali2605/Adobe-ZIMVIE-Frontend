@@ -34,7 +34,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
 
   // Function to handle bookmarking
   const handleBookmark = async (courseId) => {
-    const token = localStorage.getItem("access_token");
+    const token = localStorage.getItem("token");
     const config = {
       headers: { Authorization: `oauth ${token}` },
     };

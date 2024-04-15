@@ -1,11 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { base_url } from './AppConfig';
 
-const AddQuestionModal = ({ courseId, addQuestion, show, onHide }) => {
-  const [questions, setQuestions] = useState([{ question: '', trueOption: '', falseOption: '' }]);
+const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }) => {
+  const [questions, setQuestions] = useState([{ question: '', true: '', false: '' }]);
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const response = await axios.get(`${base_url}/getQuestionsByCourseId?courseId=${courseId}`);
+        const existingQuestions = response.data.questions;
+        setQuestions(existingQuestions.map(question => ({
+          question: question.text,
+          true: question.options.includes('true') ? 'true' : '',
+          false: question.options.includes('false') ? 'false' : ''
+        })));
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+    };
+
+    if (courseId) {
+      fetchQuestions();
+    }
+  }, [courseId]);
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { question: '', trueOption: '', falseOption: '' }]);
+    setQuestions([...questions, { question: '', true: '', false: '' }]);
   };
 
   const handleQuestionChange = (index, value) => {
@@ -17,33 +38,32 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide }) => {
   const handleOptionChange = (index, optionType, value) => {
     const newQuestions = [...questions];
     if (optionType === 'true') {
-      newQuestions[index].trueOption = value;
+      newQuestions[index].true = value;
     } else {
-      newQuestions[index].falseOption = value;
+      newQuestions[index].false = value;
     }
     setQuestions(newQuestions);
   };
 
   const handleSubmit = async () => {
     try {
-      const questionData = questions.map((question) => ({
+      const payload = {
         courseId: courseId,
-        question: question.question,
-        options: {
-          true: question.trueOption,
-          false: question.falseOption
-        }
-      }));
-      
+        questions: questions.map(({ question }) => ({
+          text: question,
+          options: ["true", "false"]
+        }))
+      };
+  
       // Send POST request to the backend server
-      const response = await axios.post('/api/addQuestions', { questions: questionData });
-
+      const response = await axios.post(`${base_url}/createCourseQuestions`, payload);
+  
       // Handle response from the server
       console.log('Response from server:', response.data);
-
+  
       // Clear form fields after successful submission
-      setQuestions([{ question: '', trueOption: '', falseOption: '' }]);
-      onHide(); // Close the modal
+      setQuestions([{ question: '', true: '', false: '' }]);
+      onHide(response.data.message); 
     } catch (error) {
       console.error('Error adding questions:', error);
     }
@@ -57,7 +77,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide }) => {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title">Add Question</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={onHide}>
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -71,14 +91,14 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide }) => {
                     </div>
                     <div className="form-group">
                       <div className="form-check">
-                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.trueOption === 'true'} onChange={() => handleOptionChange(index, 'true', 'true')} />
-                        <label className="form-check-label" htmlFor={`trueOption-${index}`}>
+                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.true === 'true'} onChange={() => handleOptionChange(index, 'true', 'true')} />
+                        <label className="form-check-label" htmlFor={`true-${index}`}>
                           True
                         </label>
                       </div>
                       <div className="form-check">
-                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.falseOption === 'false'} onChange={() => handleOptionChange(index, 'false', 'false')} />
-                        <label className="form-check-label" htmlFor={`falseOption-${index}`}>
+                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.false === 'false'} onChange={() => handleOptionChange(index, 'false', 'false')} />
+                        <label className="form-check-label" htmlFor={`false-${index}`}>
                           False
                         </label>
                       </div>
@@ -89,7 +109,6 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide }) => {
               <button type="button" className="btn btn-primary" onClick={handleAddQuestion}>Add Question</button>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={onHide}>Close</button>
               <button type="button" className="btn btn-primary" onClick={handleSubmit}>Add</button>
             </div>
           </div>
