@@ -72,7 +72,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
   return (
     <>
       {show && <div className="modal-backdrop fade show" style={{ zIndex: '1040' }}></div>}
-      <div className={`modal fade ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none',  position: "absolute", left: "36%", top: "93%", height: "auto"  }}>
+      <div className={`modal fade ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none', position: "absolute", left: "36%", top: "93%", height: "auto" }}>
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -113,61 +113,6 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
             </div>
           </div>
         </div>
-      </div>
-      <div className="modal-body">
-        {questions.map((question, index) => (
-          <div key={index}>
-            <form>
-              <div className="form-group">
-                <label htmlFor={`question-${index}`}>Question</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id={`question-${index}`}
-                  value={question.question}
-                  onChange={(e) => handleQuestionChange(index, e.target.value)}
-                />
-              </div>
-              <div className="form-group" style={{ display: "inline-grid"}}>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name={`option-${index}`}
-                    checked={question.trueOption === 'true'}
-                    onChange={() => handleOptionChange(index, 'true', 'true')}
-                  />
-                  <label className="form-check-label" htmlFor={`trueOption-${index}`}>
-                    True
-                  </label>
-                </div>
-                <div className="form-check">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name={`option-${index}`}
-                    checked={question.falseOption === 'false'}
-                    onChange={() => handleOptionChange(index, 'false', 'false')}
-                  />
-                  <label className="form-check-label" htmlFor={`falseOption-${index}`}>
-                    False
-                  </label>
-                </div>
-              </div>
-            </form>
-          </div>
-        ))}
-        <button type="button" className="btn btn-primary" onClick={handleAddQuestion}>
-          Add Question
-        </button>
-      </div>
-      <div className="modal-footer">
-        <button type="button" className="btn btn-secondary" onClick={onHide}>
-          Close
-        </button>
-        <button type="button" className="btn btn-primary" onClick={handleSubmit}>
-          Add
-        </button>
       </div>
     </>
   );

@@ -10,16 +10,17 @@ export const Header = () => {
 };
 
 const headerStyle = {
-    display: 'flex',
+    display: 'block',
     width: "100%",
     padding: '1rem',
     borderBottom: '1px solid #ccc',
     backgroundColor: 'white',
-    margin: "10px 0px"
+    margin: "0px 0px 25px 0px",
+    height: "99px"
   };
   
   const logoStyle = {
-    width: '20%', // Adjust the width as needed
+    width: '148px', // Adjust the width as needed
     height: 'auto', // Maintain aspect ratio
     marginRight: '1rem',
   };

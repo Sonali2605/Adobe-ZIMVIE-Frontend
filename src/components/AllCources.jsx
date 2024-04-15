@@ -151,7 +151,7 @@ const AllCourses = () => {
             style={{ width: "25%", float: "right"}}
           />
         </div>
-        {showModal && <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={selectedCourseId} />}
+        {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
         <div style={{ display: 'flex' }}>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {filteredCourses.map((course) => (
@@ -161,7 +161,7 @@ const AllCourses = () => {
         </div>
       </div>
       {/* Render AddQuestionModal outside of the loop */}
-      {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
+      {/* {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />} */}
       {showSuccessModal && (
         <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">

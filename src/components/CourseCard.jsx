@@ -60,11 +60,11 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
 
   return (
     <div style={{ justifyContent : "space-between"}}>
-    <div className="course-card card shadow-lg rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
+    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
       <img
         className="course-image card-img-top"
         src={course?.attributes?.imageUrl}
-        alt={course?.attributes?.localizedMetadata?.name || ""}
+        alt={course?.attributes?.localizedMetadata[0]?.name || ""}
       />
       {enrollmentState !== "Explore" && (
         <div className="progress">
@@ -104,16 +104,16 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
           <h5
             className="font-weight-bold text-xl mb-2 cursor-pointer overflow-hidden"
             style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
-            title={course?.attributes?.localizedMetadata?.name}
+            title={course?.attributes?.localizedMetadata[0]?.name}
           >
-            {course?.attributes?.localizedMetadata?.name}
+            {course?.attributes?.localizedMetadata[0]?.name}
           </h5>
           <p
             className="text-gray-700 text-base cursor-pointer overflow-hidden"
             style={{ maxHeight: '3em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
-            title={course?.attributes?.localizedMetadata?.description}
+            title={course?.attributes?.localizedMetadata[0]?.description}
           >
-            {course?.attributes?.localizedMetadata?.description}
+            {course?.attributes?.localizedMetadata[0]?.description}
           </p>
           <div className="d-flex justify-content-center mt-4">
             <button
