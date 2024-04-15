@@ -59,6 +59,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
   };
 
   return (
+    <div style={{ justifyContent : "space-between"}}>
     <div className="course-card card shadow-lg rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
       <img
         className="course-image card-img-top"
@@ -126,6 +127,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
       </div>
       {/* <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={course.id} /> */}
       {/* {showToast && <CustomToast message={toastMessage} onClose={() => setShowToast(false)} />} */}
+    </div>
     </div>
   );
 };

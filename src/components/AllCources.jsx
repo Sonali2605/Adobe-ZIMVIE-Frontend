@@ -132,7 +132,7 @@ const AllCourses = () => {
         </div>
         {showModal && <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={selectedCourseId} />}
         <div style={{ display: 'flex' }}>
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-4">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {filteredCourses.map((course) => (
               <CourseCard key={course.id} course={course} EnrollHandle={EnrollHandle} login={login} onClick={() => handleCardClick(course.id)} />
             ))}          
