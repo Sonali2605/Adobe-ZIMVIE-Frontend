@@ -59,8 +59,8 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
   };
 
   return (
-    <div style={{ justifyContent : "space-between"}}>
-    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
+    <div className=' justify-content-between' >
+    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick} style={{height: "100%"}}>
       <img
         className="course-image card-img-top"
         src={course?.attributes?.imageUrl}
@@ -83,41 +83,24 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
           <div className="text-sm text-gray-600">
             {minutes}m {seconds}s
           </div>
-          <div className="text-sm text-right text-gray-600">{progress}%</div>
         </div>
-        <div className="d-flex justify-content-between mt-4">
-          <div className="text-lg text-blue-500 font-weight-bold">
-            {course?.attributes?.price ? "$ " + course?.attributes?.price : "Free"}
-          </div>
-          {!login && (
-            <div className="text-sm text-right ">
-              <span
-                className="bookmark-icon ml-2"
-                onClick={() => handleBookmark(course.id || '')}
-              >
-                <FontAwesomeIcon icon={isBookmarked ? solidBookmark : lightBookmark} />
-              </span>
-            </div>
-          )}
+        <div className="py-4 flex-grow">
+           <div className="font-bold text-xl mb-2 cursor-pointer overflow-hidden"
+          style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis', fontWeight: "600" }}
+          title={course?.attributes?.localizedMetadata[0]?.name}>
+          {course?.attributes?.localizedMetadata[0]?.name}
         </div>
-        <div className="mt-4">
-          <h5
-            className="font-weight-bold text-xl mb-2 cursor-pointer overflow-hidden"
-            style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
-            title={course?.attributes?.localizedMetadata[0]?.name}
-          >
-            {course?.attributes?.localizedMetadata[0]?.name}
-          </h5>
-          <p
-            className="text-gray-700 text-base cursor-pointer overflow-hidden"
-            style={{ maxHeight: '3em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
-            title={course?.attributes?.localizedMetadata[0]?.description}
-          >
-            {course?.attributes?.localizedMetadata[0]?.description}
-          </p>
-          <div className="d-flex justify-content-center mt-4">
+        <p
+          className="text-gray-700 text-base cursor-pointer overflow-hidden"
+          style={{ maxHeight: '3em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
+          title={course?.attributes?.localizedMetadata[0]?.description}
+        >
+          {course?.attributes?.localizedMetadata[0]?.description}
+        </p>
+          <div className="d-flex mt-4">
             <button
-              className="enroll-link btn btn-primary"
+              className="enroll-link btn btn-primary text-center text-white"
+              style={{borderRadius: "25px", width: "65%", background: "#172142"}}
               onClick={() => EnrollHandle(course?.id || '')}
             >
               {enrollmentState}

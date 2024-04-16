@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../public/logo.png'; // Replace './logo.png' with the path to your logo image file
+import logo from '/logo.png'; // Replace './logo.png' with the path to your logo image file
 
 export const Header = () => {
   return (

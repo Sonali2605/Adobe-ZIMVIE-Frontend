@@ -105,7 +105,6 @@ const AuthorDashboard = () => {
     <div className="container" style={{width: '80%', margin: '0 auto'}}>
     <h2 style={{color: '#333', fontSize: '22px', marginTop: '0', fontWeight: "600"}}>Author Dashboard</h2>
     <div className="user-info" style={{backgroundColor: '#fff', padding: '20px', borderRadius: '8px', marginTop: '10px'}}>
-        <h3 style={{fontWeight: '400', fontSize: '22px', marginTop: '0'}}>Progress Report for Learners</h3>
         <AllCourses/>
     </div>
 </div>
