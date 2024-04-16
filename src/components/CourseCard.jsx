@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookmark as solidBookmark } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as lightBookmark } from '@fortawesome/free-regular-svg-icons';
-import AddQuestionModal from './AddQuestionModal ';
 
 const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
   // Calculate progress percentage
@@ -60,9 +59,10 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
 
   return (
     <div className=' justify-content-between' >
-    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick} style={{height: "100%"}}>
+    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
       <img
         className="course-image card-img-top"
+        style={{ height: "150px"}}
         src={course?.attributes?.imageUrl}
         alt={course?.attributes?.localizedMetadata[0]?.name || ""}
       />
@@ -97,19 +97,8 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
         >
           {course?.attributes?.localizedMetadata[0]?.description}
         </p>
-          <div className="d-flex mt-4">
-            <button
-              className="enroll-link btn btn-primary text-center text-white"
-              style={{borderRadius: "25px", width: "65%", background: "#172142"}}
-              onClick={() => EnrollHandle(course?.id || '')}
-            >
-              {enrollmentState}
-            </button>
-          </div>
         </div>
       </div>
-      {/* <AddQuestionModal show={showModal} onHide={() => setShowModal(false)} courseId={course.id} /> */}
-      {/* {showToast && <CustomToast message={toastMessage} onClose={() => setShowToast(false)} />} */}
     </div>
     </div>
   );

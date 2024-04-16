@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CourseCard from './CourseCard';
 import { useNavigate, useLocation } from "react-router-dom";
-import { clientId, clientSecreat, refreshToken, base_adobe_url } from "./AppConfig";
+import { clientId, clientSecreat, refreshToken, base_adobe_url,login_url } from "./AppConfig";
 import AddQuestionModal from './AddQuestionModal ';
 import Modal from 'react-modal';
+import CourseQuestion from './CourseQuestion';
 
 const customStyles = {
   content: {
@@ -17,10 +18,9 @@ const customStyles = {
     border: "none",
     backgroundColor: "none"
   },
-  
 };
 
-const AllCourses = () => {
+const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const AllCourses = () => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [showModal, setShowModal] = useState(false); 
   const [selectedCourseId, setSelectedCourseId] = useState(null);
+  const [selectedCourseName, setSelectedCourseName] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -38,24 +39,52 @@ const AllCourses = () => {
   };
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const userId = urlParams.get('userId');
-    const authToken = urlParams.get('authToken');
-    
-    if (userId && authToken) {
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('token', authToken);
-    }
+    const login = async () => {
+      try {
+      const client_id = "449923a1-a01c-4bf5-b7c8-2137718d6d04";
+      const client_secret = "b1b22c3e-900c-4bd1-b010-daf95c01b968";
+      const refresh_token = "4022c902affc1b9527820308dfd0f56d";
+
+  
+        const params = new URLSearchParams({
+          client_id,
+          client_secret,
+          refresh_token
+        });
+        const url = `${login_url}/oauth/token/refresh`;
+        const responseToken = await axios.post(
+          `${url}`,
+          params,
+          {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }
+        );
+        const tokenData = responseToken.data;
+        localStorage.setItem(
+          'Learnertoken',
+          tokenData.access_token
+        );
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+      }
+    };
+  
+    login();
     getCoursestoExplore();
+  
     return () => {
-      localStorage.removeItem('userId');
-      localStorage.removeItem('token');
+      // localStorage.removeItem('Learnertoken');
+      // localStorage.removeItem('isLogin')
+      // localStorage.removeItem('email')
     };
   }, []);
+  
 
   async function getCoursestoExplore() {
     try {
-      let token = localStorage.getItem("token");
+      let token = localStorage.getItem("Learnertoken");
       const config = {
         headers: { Authorization: `oauth ${token}` },
       };
@@ -109,8 +138,9 @@ const AllCourses = () => {
     navigate('/');
   };
 
-  const handleCardClick = (courseId) => {
-    setSelectedCourseId(courseId); // Set the selected course ID when the card is clicked
+  const handleCardClick = (courseId, courseName) => {
+    setSelectedCourseId(courseId); 
+    setSelectedCourseName(courseName);
     setShowModal(true);
   };
 
@@ -166,13 +196,13 @@ const AllCourses = () => {
             style={{ width: "25%", float: "right"}}
           />
         </div>
-        {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
+        {showModal && <CourseQuestion show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} courseName ={selectedCourseName} />}
         <div style={{ display: 'flex', justifyContent: 'center' }}>
   <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mx-8">
     {/* Increase the value of g-* to increase the space between cards */}
     {filteredCourses.map((course) => (
       <div key={course.id} className="col mb-4">
-        <CourseCard course={course} EnrollHandle={EnrollHandle} login={login} onClick={() => handleCardClick(course.id)} />
+        <CourseCard course={course} EnrollHandle={EnrollHandle} login={login} onClick={() => handleCardClick(course.id, course?.attributes?.localizedMetadata[0]?.name)} />
       </div>
     ))}
   </div>
@@ -205,4 +235,4 @@ const AllCourses = () => {
   );
 };
 
-export default AllCourses;
+export default CourseList;

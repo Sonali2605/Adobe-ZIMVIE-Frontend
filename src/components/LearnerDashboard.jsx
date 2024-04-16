@@ -1,158 +1,65 @@
 import React, { useEffect, useState } from 'react';
 import { CreateCdnCourse } from './CreateCdnCourse';
-import { Header } from './Header';
 import axios from 'axios';
 import { base_url, base_adobe_url } from './AppConfig';
+import AllCourses from './AllCources';
+import { Header } from './Header';
+import CourseList from './Courselist';
 
-const LearnerDashboard = () => {
-    const [isModelOpen, setIsModelOpen] = useState(false);
-    const [cpdCourses, setcpdCourses] = useState([]);
-    const [almCourses, setAlmCourses] = useState([]);
-    const [expanded, setExpanded] = useState(false);
-    const [expandedAlm, setExpandedAlm] = useState(false);
-    const [cpdHours, setCpdHours] = useState(0);
-    const [almHours, setAlmHours]= useState(0);
+// userId=23175045&locale=en_US&authToken=natext_3de011182daf467bbd8fe8defc1f44fe
+const AuthorDashboard = () => {
+    const [usersData, setUsersData] = useState([]);
 
     useEffect(() => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const userId = urlParams.get('userId');
-      const authToken = urlParams.get('authToken');
-      
-      if (userId && authToken) {
-          localStorage.setItem('userId', userId);
-          localStorage.setItem('token', authToken);
-          // almCourcesCall();
-          learnerApiCall(userId);
-      }
-      return () => {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('token');
-    };
+        fetchAdminReport();
     }, []);
 
-    useEffect(()=>{
-      const fetchData = async () => {
-        await learnerApiCall(localStorage.getItem('userId'));
-    };
-
-    fetchData();
-}, [isModelOpen]);
-
-    const almCourcesCall= async()=>{
-      try {
-        const token= localStorage.getItem("token");
-        const config = {
-          headers: { Authorization: `Bearer ${token}` }
-        };
-        // Send GET request to the API endpoint
-        const response = await axios.get(`${base_adobe_url}/enrollments?include=learningObject&page[limit]=10&filter.completed=true&includeHierarchicalEnrollments=false&sort=dateEnrolled`,config);
-        
-        if(response?.data?.data && response.data.data.length !== 0){
-        const almHours = response.data?.included?.reduce((acc, course) => acc + parseInt(course?.attributes?.duration)/3600, 0);
-          setAlmHours(almHours);
-          setAlmCourses(response.data.included);
+    const fetchAdminReport = async () => {
+        try {
+            const response = await axios.get(`${base_url}/adminReport`);
+            console.log('Admin Report Response:', response.data);
+            
+            const usersData = response.data.map(user => ({
+                userId: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                totalCpdHours: user.courses.reduce((acc, course) => acc + parseInt(course.totalhours), 0),
+                totalAlmHours: user.almCourseDuration// Initialize total ALM hours here
+            }));
+            
+            // Iterate over usersData to fetch ALM hours for each user
+            // for (let i = 0; i < usersData.length; i++) {
+            //     try {
+            //         const userId = usersData[i].userId;
+            //         const token = localStorage.getItem("token");
+            //         const config = {
+            //             headers: { Authorization: `Bearer ${token}` }
+            //         };
+            //         const userDataResponse = await axios.get(`${base_adobe_url}/users/${userId}/enrollments?include=learningObject&page[limit]=10&sort=dateEnrolled`, config);
+            //         console.log(`User Data for User ID ${userId}:`, userDataResponse.data);
+            //         const learningObjectDurations = userDataResponse.data.included.reduce((acc, item) => acc + (item.attributes.duration) / 3600, 0);
+            //         usersData[i].totalAlmHours = learningObjectDurations;
+            //     } catch (error) {
+            //         console.error(`Error fetching user data for User ID ${userId}:`, error);
+            //     }
+            // }
+            
+            setUsersData(usersData); // Update the state after fetching ALM hours for all users
+        } catch (error) {
+            console.error('Error fetching admin report:', error);
         }
-      } catch (error) {
-        // Handle error
-        console.error('Error:', error);
-      }
-    }
-
-    const learnerApiCall= async(userId)=>{
-      try {
-        // Send GET request to the API endpoint
-        const response = await axios.get(`${base_url}/userReport?user_id=${userId}`);
-        setcpdCourses(response.data);
-        const cpdHours = response.data?.courses?.reduce((acc, course) => acc + parseInt(course.totalhours), 0);
-        setCpdHours(cpdHours);
-      } catch (error) {
-        // Handle error
-        console.error('Error:', error);
-      }
-    }
-    const toggleModel =async()=>{
-        setIsModelOpen(!isModelOpen);
-    }
-    const toggleExpanded = () => {
-      setExpanded(!expanded);
     };
-    const toggleExpandedAlm = () => {
-      setExpandedAlm(!expandedAlm);
-    };
-    return (
-        <div className="container">
-            <Header />
-            <div style={{display:"flex", justifyContent:"space-between"}}>
-              <h2>Learner Dashboard</h2>
-              <button className="btnModel mt-5" onClick={toggleModel}> Add CPD</button>
-            </div>
-            {isModelOpen && <CreateCdnCourse closeModal={toggleModel} />}
-            <div className="user-info">
-
-                <h3 style={{fontWeight:"400", fontSize:"22px", marginTop:"0px"}}>Progress Report</h3>
-                <p className="mainInfo"><strong>Name:</strong> {cpdCourses?.user?.fullname}</p>
-                <p className="mainInfo"><strong>Email:</strong> {cpdCourses?.user?.email}</p>
-                <button className={`btn ${expanded ? 'expanded accordianCollapse' : ''}`} onClick={toggleExpanded}>
-                  CPD Courses - <span style={{fontSize:"10px"}}>{cpdHours} Hours</span>
-                  <span className={`arrow ${expanded ? 'expanded' : ''}`}></span>
-                </button>
-                            
-                {cpdCourses?.courses?.length && expanded ? (
-                    <div style={{marginBottom:"10px"}}>
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                <th style={{ width: '45%' }}>Title</th>
-            <th style={{ width: '15%' }}>Date</th>
-            <th style={{ width: '10%', textAlign:"right"}}>Hours Spent</th>
-            <th style={{ width: '20%', paddingLeft: '40px' }}>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {cpdCourses?.courses?.map((course, index) => (
-                                    <tr key={index}>
-                                        <td style={{ width: '45%' }}>{course?.title}</td>
-                                        <td style={{ width: '15%' }}>{new Date(course?.date).toISOString().split('T')[0]}</td>
-                                        <td style={{ width: '15%',textAlign:"right" }}>{course?.totalhours}</td>
-                                        <td style={{ width: '15%', paddingLeft: '40px'  }}>Completed</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                ):expanded &&(<div  className="noData">No Courses Found</div>)}
-                {/* <button className={`btn ${expandedAlm ? 'expanded accordianCollapse' : ''}`}  onClick={toggleExpandedAlm}>
-                    ALM Courses - <span style={{fontSize:"10px"}}>{almHours} Hours</span>
-                    <span className={`arrow ${expandedAlm ? 'expanded ' : ''}`}></span>
-                </button>
-                
-              {almCourses?.length &&expandedAlm ? (
-                <div>
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th style={{ width: '60%' }}>Title</th>
-                                <th style={{ width: '15%' }}>Completion Date</th>
-                                <th style={{ width: '15%' }}>Hours Spent</th>
-                                <th style={{ width: '15%' }}>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {almCourses?.map((course, index) => (
-                                <tr key={index}>
-                                    <td style={{ width: '45%' }}>{course?.attributes?.localizedMetadata[0].name}</td>
-                                    <td style={{ width: '15%' }}>{new Date(course?.attributes?.effectiveModifiedDate).toISOString().split('T')[0]}</td>
-                                    <td style={{ width: '15%',textAlign:"right" }}>{(course?.attributes?.duration)/3600}</td>
-                                    <td style={{ width: '15%' }}>Completed</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            ): expandedAlm &&(<div className="noData">No Cources Found</div>)} */}
-            </div>
-        </div>
-    )
+  return (
+    <>
+    <Header/>
+    <div className="container" style={{width: '80%', margin: '0 auto'}}>
+    <h2 style={{color: '#333', fontSize: '22px', marginTop: '0', fontWeight: "600"}}>Learner Dashboard</h2>
+    <div className="user-info" style={{backgroundColor: '#fff', padding: '20px', borderRadius: '8px', marginTop: '10px'}}>
+        <CourseList/>
+    </div>
+</div>
+</>
+  )
 }
 
-export default LearnerDashboard;
+export default AuthorDashboard

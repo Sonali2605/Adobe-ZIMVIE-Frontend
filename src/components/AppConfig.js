@@ -1,5 +1,6 @@
 // AppConfig.js
 export const base_url = "http://localhost:3000";
+export const login_url = "https://learningmanager.adobe.com"
 export const base_adobe_url = "https://learningmanager.adobe.com/primeapi/v2";
 export const clientId= "f8fe1dad-1699-4ced-b255-d02f991425e8"    
 // eabb3668-a036-45c5-ba10-7a4160827517";
