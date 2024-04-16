@@ -4,6 +4,21 @@ import CourseCard from './CourseCard';
 import { useNavigate, useLocation } from "react-router-dom";
 import { clientId, clientSecreat, refreshToken, base_adobe_url } from "./AppConfig";
 import AddQuestionModal from './AddQuestionModal ';
+import Modal from 'react-modal';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    border: "none",
+    backgroundColor: "none"
+  },
+  
+};
 
 const AllCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -119,7 +134,7 @@ const AllCourses = () => {
   }
 
   return (
-    <>
+    <>     
       <div className='mb-6'></div>
       {login ?
         <>
@@ -135,11 +150,11 @@ const AllCourses = () => {
         </>
       }
       <div className='px-6'>
-        <div>
+        <div style={{display: "flex", padding: "20px"}}>
           {login ?
-            <h1 className="text-2xl font-bold mb-4" > Welcome To 3Ds Learning Portal</h1>
+            <span className="text-2xl font-bold mb-4" style={{width: "80%"}}> Welcome To 3Ds Learning Portal</span>
             :
-            <h1 className="text-2xl font-bold mb-4 bg-primary text-white p-2" >All Courses</h1>
+            <span className="text-2xl font-bold mb-2 p-2" style={{width: "80%", fontSize: "22px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
           }
 
           <input
@@ -148,31 +163,39 @@ const AllCourses = () => {
             value={searchQuery}
             onChange={handleSearch}
             className="form-control mb-4"
+            style={{ width: "25%", float: "right"}}
           />
         </div>
+        {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
         <div style={{ display: 'flex' }}>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
             {filteredCourses.map((course) => (
               <CourseCard key={course.id} course={course} EnrollHandle={EnrollHandle} login={login} onClick={() => handleCardClick(course.id)} />
-            ))}
-          </div>
+            ))}          
+          </div>         
         </div>
       </div>
       {/* Render AddQuestionModal outside of the loop */}
-      {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />}
+      {/* {showModal && <AddQuestionModal show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} />} */}
       {showSuccessModal && (
-        <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+         <Modal
+         isOpen={true}
+         style={customStyles}
+         contentLabel="Example Modal"
+       >
+        <div className="modal fade show" tabIndex="-1" role="dialog" style={{ display: 'block', backgroundColor: 'white' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-body">
                 <h5>{message}</h5>
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-primary" onClick={closeConfirmation}>Close</button>
+              <div className="modal-footer justify-content-center">
+                <button style={{borderRadius: "25px", width: "40%", background: "#172142", color: "white"}} type="button" className="btn text-center" onClick={closeConfirmation}>Close</button>
               </div>
             </div>
           </div>
         </div>
+        </Modal>
       )}
     </>
   );

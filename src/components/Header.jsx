@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../public/logo.png'; // Replace './logo.png' with the path to your logo image file
+import logo from '/logo.png'; // Replace './logo.png' with the path to your logo image file
 
 export const Header = () => {
   return (
@@ -10,15 +10,17 @@ export const Header = () => {
 };
 
 const headerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center', // Center the items horizontally
+    display: 'block',
+    width: "100%",
     padding: '1rem',
     borderBottom: '1px solid #ccc',
+    backgroundColor: 'white',
+    margin: "0px 0px 25px 0px",
+    height: "99px"
   };
   
   const logoStyle = {
-    width: '15%', // Adjust the width as needed
+    width: '148px', // Adjust the width as needed
     height: 'auto', // Maintain aspect ratio
     marginRight: '1rem',
   };
