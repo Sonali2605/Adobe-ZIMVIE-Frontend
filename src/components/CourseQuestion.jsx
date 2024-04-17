@@ -13,7 +13,9 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width: "30%",
+     width: "60%",
+     borderRadius: "15px",
+     padding: "20px 20px 0px 20px "
   },
 };
 
@@ -146,17 +148,17 @@ const CourseQuestion = ({ courseId, courseName, addQuestion, show, onHide, close
           contentLabel="Example Modal"
         >
           <div className="modal-dialog modal-dialog-centered" role="document">
-            <div className="modal-content" style={{ padding: "13px" }}>
-              <div className="modal-header">
-                <h5 className="modal-title">Course Registration</h5>
+            <div className="modal-content" style={{ padding: "0px 13px 13px 13px" }}>
+              <div className="modal-header mb-4" style={{ borderBottom: "1px solid #d5d5d5"}}>
+                <h5 className="modal-title mb-2">Course Registration</h5>
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div className="modal-body">
-                <div className='overflow-y-scroll' style={{ height: "auto", maxHeight: "300px" }}>
+              <div className="modal-body" style={{height: "300px"}}>
+                <div className='row'>
                   {!isLogin &&
-                    <div>
+                    <div className='col-6' style={{borderRadius: "10px",  padding: "12px 20px", border: "1px solid #d5d5d5"}}>
                       <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -167,7 +169,7 @@ const CourseQuestion = ({ courseId, courseName, addQuestion, show, onHide, close
                       </div>
                     </div>
                   }
-                  <div>
+                  <div className={`col-${isLogin ? '12' : '6'} overflow-y-scroll`}  style={{ height: "auto", maxHeight: "300px", padding: "12px 20px", }}>
                     {questions.map((question, index) => (
                       <div key={index}>
                         <form>
@@ -196,7 +198,7 @@ const CourseQuestion = ({ courseId, courseName, addQuestion, show, onHide, close
                 </div>
               </div>
               <div className="modal-footer justify-content-center">
-                <button style={{ borderRadius: "25px", width: "40%", background: "#172142", color: "white" }} type="button" className="btn text-center" onClick={handleSubmit}>Submit</button>
+                <button style={{ borderRadius: "25px", width: "40%", background: "#172142", color: "white" }} type="button" className="btn text-center mt-4" onClick={handleSubmit}>Submit</button>
               </div>
             </div>
           </div>

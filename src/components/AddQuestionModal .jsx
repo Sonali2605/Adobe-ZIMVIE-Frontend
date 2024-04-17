@@ -13,7 +13,9 @@ const customStyles = {
     bottom: 'auto',
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
-    width: "30%",
+    width: "40%",
+    borderRadius: "15px",
+    padding: "0px 20px 0px 20px "
   },
   
 };
@@ -157,9 +159,9 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
         {/* <div className={`modal fade ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none' }}> */}
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content" style={{ padding: "13px"}}>
-            <div className="modal-header">
-              <h5 className="modal-title">Add Question</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
+            <div className="modal-header mb-4" style={{ borderBottom: "1px solid #d5d5d5"}} >
+              <h5 className="modal-title mb-2">Add Question</h5>
+              <button type="button" style={{ top: "10px"}}className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>

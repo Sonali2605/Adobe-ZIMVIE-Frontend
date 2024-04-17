@@ -67,7 +67,7 @@ const AllCourses = () => {
         language = "en-US,fr-FR";
       }
       const response = await axios.get(
-        `https://learningmanager.adobe.com/primeapi/v2/learningObjects?page[limit]=20&filter.catalogIds=174313&sort=name&filter.learnerState=notenrolled&filter.ignoreEnhancedLP=true&language=${language}`,
+        `https://learningmanager.adobe.com/primeapi/v2/learningObjects?page[limit]=20&filter.catalogIds=176038&sort=name&filter.learnerState=notenrolled&filter.ignoreEnhancedLP=true&language=${language}`,
         config
       );
       const result = response?.data?.data;
@@ -154,7 +154,7 @@ const AllCourses = () => {
           {login ?
             <span className="text-2xl font-bold mb-4" style={{width: "80%"}}> Welcome To 3Ds Learning Portal</span>
             :
-            <span className="text-2xl font-bold mb-2 p-2" style={{width: "80%", fontSize: "32px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
+            <span className="text-2xl font-bold" style={{width: "80%", fontSize: "20px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
           }
 
           <input
