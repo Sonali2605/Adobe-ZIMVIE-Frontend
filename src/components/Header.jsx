@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '/logo.png'; // Replace './logo.png' with the path to your logo image file
 
 export const Header = () => {
+  const [ isLoggedIn, setLoggedIn ] = useState('');
   // Check if the URL contains '/learner' and 'Useremail' exists in localStorage
-  const isLoggedIn = window.location.pathname.includes('/learner') && localStorage.getItem('Useremail');
+  useEffect(() => {
+
+    const isLoggedState = window.location.pathname.includes('/learner') && localStorage.getItem('Useremail');
+    console.log('URL Path:', window.location.pathname);
+  console.log('Useremail in Local Storage:', localStorage.getItem('Useremail'));
+  console.log('isLoggedState:', isLoggedState);
+    if(isLoggedState){
+      setLoggedIn(isLoggedState);
+    }
+  }, [])
+  
 
   return (
     <header style={headerStyle}>
@@ -31,11 +42,11 @@ const headerStyle = {
   borderBottom: '1px solid #ccc',
   backgroundColor: 'white',
   marginBottom: '25px',
-  height: '99px'
+  height: '70px'
 };
 
 const logoStyle = {
-  width: '148px', // Adjust the width as needed
+  width: '120px', // Adjust the width as needed
   height: 'auto', // Maintain aspect ratio
   marginRight: '1rem',
 };

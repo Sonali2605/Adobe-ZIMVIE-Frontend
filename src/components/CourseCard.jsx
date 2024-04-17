@@ -58,7 +58,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
   };
 
   return (
-    <div className=' justify-content-between' >
+    <div className='justify-content-between' >
     <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
       <img
         className="course-image card-img-top"
@@ -79,20 +79,20 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
         </div>
       )}
       <div className="card-body">
-        <div className="d-flex justify-content-between">
-          <div className="text-sm text-gray-600">
-            {minutes}m {seconds}s
-          </div>
-        </div>
-        <div className="py-4 flex-grow">
-           <div className="font-bold text-xl mb-2 cursor-pointer overflow-hidden"
+        <div className="font-bold text-xl cursor-pointer overflow-hidden"
           style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis', fontWeight: "600" }}
           title={course?.attributes?.localizedMetadata[0]?.name}>
           {course?.attributes?.localizedMetadata[0]?.name}
         </div>
+        <div className="py-3 flex-grow">
+        <div className="d-flex justify-content-between">
+          <div className="text-sm text-gray-600 mb-3 ml-3" style ={{fontSize:"12px",fontWeight: "600",marginLeft:"5px"}}>
+            {minutes}m {seconds}s
+          </div>
+        </div>
         <p
           className="text-gray-700 text-base cursor-pointer overflow-hidden"
-          style={{ maxHeight: '3em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' }}
+          style={{ maxHeight: '3em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis' , fontSize:"13px",fontWeight: "400",marginLeft:"5px"}}
           title={course?.attributes?.localizedMetadata[0]?.description}
         >
           {course?.attributes?.localizedMetadata[0]?.description}
