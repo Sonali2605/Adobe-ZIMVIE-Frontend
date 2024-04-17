@@ -7,7 +7,7 @@
 }
 
 body{
-    font-family: 'Soleil', sans-serif;
+    font-family: 'inter', sans-serif;
 }
 
 .btn {
@@ -158,4 +158,21 @@ input, textarea {
 }
 .mainInfo{
     font-size: 14px;
+}
+
+/* Accordion.css */
+#admin-dashboard .accordion-button:not(.collapsed) {
+    color: #fff;
+    background-color: #1463f7;
+    box-shadow: inset 0 calc(-1* var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+/* TableStyles.css */
+#admin-dashboard .table-striped>tbody>tr:nth-of-type(odd)>* {
+    /* Your modified CSS properties */
+    --bs-table-bg-type: #fff;
+}
+
+#admin-dashboard .accordion-button {
+    font-weight: 600;
 }

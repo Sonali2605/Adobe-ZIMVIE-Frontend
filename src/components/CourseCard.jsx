@@ -79,16 +79,16 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
         </div>
       )}
       <div className="card-body">
-        <div className="d-flex justify-content-between">
-          <div className="text-sm text-gray-600">
-            {minutes}m {seconds}s
-          </div>
-        </div>
-        <div className="py-4 flex-grow">
-           <div className="font-bold text-xl mb-2 cursor-pointer overflow-hidden"
+        <div className="font-bold text-xl cursor-pointer overflow-hidden"
           style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis', fontWeight: "600" }}
           title={course?.attributes?.localizedMetadata[0]?.name}>
           {course?.attributes?.localizedMetadata[0]?.name}
+        </div>
+        <div className="py-3 flex-grow">
+        <div className="d-flex mb-2 justify-content-between">
+          <div className="text-sm text-gray-600">
+            {minutes}m {seconds}s
+          </div>
         </div>
         <p
           className="text-gray-700 text-base cursor-pointer overflow-hidden"

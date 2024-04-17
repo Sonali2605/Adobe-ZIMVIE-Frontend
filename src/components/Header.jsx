@@ -31,11 +31,11 @@ const headerStyle = {
   borderBottom: '1px solid #ccc',
   backgroundColor: 'white',
   marginBottom: '25px',
-  height: '99px'
+  height: '70px'
 };
 
 const logoStyle = {
-  width: '148px', // Adjust the width as needed
+  width: '120px', // Adjust the width as needed
   height: 'auto', // Maintain aspect ratio
   marginRight: '1rem',
 };

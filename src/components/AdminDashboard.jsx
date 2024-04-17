@@ -24,10 +24,10 @@ const AdminDashboard = () => {
         <>
         
         <Header />
-        <div className="container">
+        <div className="container" id='admin-dashboard'>
             <h2>Admin Dashboard</h2>
             {Object.keys(usersData).length > 0 && (
-                <div className="user-info" style={{ marginTop: "10px" }}>
+                <div className="user-info bg-white" style={{ marginTop: "10px" }}>
                     <Accordion defaultActiveKey="0">
                         {Object.keys(usersData).map(courseId => (
                             <Accordion.Item key={courseId} eventKey={courseId}>

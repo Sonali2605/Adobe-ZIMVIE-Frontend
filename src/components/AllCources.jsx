@@ -154,7 +154,7 @@ const AllCourses = () => {
           {login ?
             <span className="text-2xl font-bold mb-4" style={{width: "80%"}}> Welcome To 3Ds Learning Portal</span>
             :
-            <span className="text-2xl font-bold mb-2 p-2" style={{width: "80%", fontSize: "22px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
+            <span className="text-2xl font-bold mb-2 p-2" style={{width: "80%", fontSize: "32px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
           }
 
           <input
