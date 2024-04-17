@@ -58,7 +58,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
   };
 
   return (
-    <div className=' justify-content-between' >
+    <div className='justify-content-between' >
     <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
       <img
         className="course-image card-img-top"
@@ -85,7 +85,7 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
           {course?.attributes?.localizedMetadata[0]?.name}
         </div>
         <div className="py-3 flex-grow">
-        <div className="d-flex mb-2 justify-content-between">
+        <div className="d-flex justify-content-between">
           <div className="text-sm text-gray-600">
             {minutes}m {seconds}s
           </div>
