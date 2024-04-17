@@ -115,7 +115,6 @@ const CourseQuestion = ({ courseId, courseName, addQuestion, show, onHide, close
         setQuestions([{email:''}])
       }
       localStorage.setItem("isLogin",true);
-     window.location.reload()
     } catch (error) {
       console.error('Error adding questions:', error);
     }

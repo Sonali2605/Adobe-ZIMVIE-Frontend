@@ -160,7 +160,8 @@ const CourseList = () => {
 
   const closeConfirmation = () =>{
     setShowSuccessModal(false);
-    setMessage("")
+    setMessage("");
+    window.location.reload();
   }
 
   return (
