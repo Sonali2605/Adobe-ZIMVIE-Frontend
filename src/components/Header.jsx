@@ -72,7 +72,7 @@ const checkData = async()=>{
       {isLearner && isLoggedIn && (
         <button onClick={handleLogout} style={logoutButtonStyle}>Logout</button>
       )}
-      <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered >
+      <Modal show={showLoginModal} onHide={() => setShowLoginModal(false)} centered style={{ position: "absolute", left: "30%", height: "73%", top: "13%"}} >
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
