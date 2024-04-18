@@ -18,87 +18,11 @@ const AuthorDashboard = () => {
           localStorage.setItem('userId', userId);
           localStorage.setItem('token', authToken);
       }
-        fetchAdminReport();
         return () => {
           localStorage.removeItem('userId');
           localStorage.removeItem('token');
       };
     }, []);
-
-    // const fetchAdminReport = async () => {
-    //     try {
-    //         // Send GET request to the API endpoint to fetch admin report data
-    //         const response = await axios.get(`${base_url}/adminReport`);
-    //         console.log('Admin Report Response:', response.data);
-            
-    //         // Extract fullname, email, and total hours spent on all courses per user
-    //         const usersData = response.data.map(user => ({
-    //             userId: user._id,
-    //             fullname: user.fullname,
-    //             email: user.email,
-    //             totalCpdHours: user.courses.reduce((acc, course) => acc + parseInt(course.totalhours), 0),
-    //             // totalAlmHours: 0
-    //         }));
-    //         setUsersData(usersData);
-
-    //         // Call another API using user ID received from the admin report API
-    //         usersData.forEach(async userData => {
-    //             try {
-    //                 const userId = userData.userId;
-    //                 // const token= "dab7ac67f5c81421c9fa6ccf83e7aeec";
-    //                 const token= localStorage.getItem("token");
-    //     const config = {
-    //       headers: { Authorization: `Bearer ${token}` }
-    //     };
-    //                 const userDataResponse = await axios.get(`${base_adobe_url}/users/${userId}/enrollments?include=learningObject&page[limit]=10&sort=dateEnrolled`, config);
-    //                 console.log(`User Data for User ID ${userId}:`, userDataResponse.data);
-    //                 const learningObjectDurations = userDataResponse.data.included.reduce((acc, item) => acc + (item.attributes.duration)/3600, 0);
-    //                 userData.totalAlmHours = learningObjectDurations;
-    //                 setUsersData(usersData);
-    //                 // Handle the response data here
-    //             } catch (error) {
-    //                 console.error(`Error fetching user data for User ID ${userId}:`, error);
-    //             }
-    //         });
-    //     } catch (error) {
-    //         console.error('Error fetching admin report:', error);
-    //     }
-    // };
-    const fetchAdminReport = async () => {
-        try {
-            const response = await axios.get(`${base_url}/adminReport`);
-            console.log('Admin Report Response:', response.data);
-            
-            const usersData = response.data.map(user => ({
-                userId: user._id,
-                fullname: user.fullname,
-                email: user.email,
-                totalCpdHours: user.courses.reduce((acc, course) => acc + parseInt(course.totalhours), 0),
-                totalAlmHours: user.almCourseDuration// Initialize total ALM hours here
-            }));
-            
-            // Iterate over usersData to fetch ALM hours for each user
-            // for (let i = 0; i < usersData.length; i++) {
-            //     try {
-            //         const userId = usersData[i].userId;
-            //         const token = localStorage.getItem("token");
-            //         const config = {
-            //             headers: { Authorization: `Bearer ${token}` }
-            //         };
-            //         const userDataResponse = await axios.get(`${base_adobe_url}/users/${userId}/enrollments?include=learningObject&page[limit]=10&sort=dateEnrolled`, config);
-            //         console.log(`User Data for User ID ${userId}:`, userDataResponse.data);
-            //         const learningObjectDurations = userDataResponse.data.included.reduce((acc, item) => acc + (item.attributes.duration) / 3600, 0);
-            //         usersData[i].totalAlmHours = learningObjectDurations;
-            //     } catch (error) {
-            //         console.error(`Error fetching user data for User ID ${userId}:`, error);
-            //     }
-            // }
-            
-            setUsersData(usersData); // Update the state after fetching ALM hours for all users
-        } catch (error) {
-            console.error('Error fetching admin report:', error);
-        }
-    };
   return (
     <>
     <Header/>

@@ -21,7 +21,7 @@ const customStyles = {
 };
 
 const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }) => {
-  const [questions, setQuestions] = useState([{ question: '', true: '', false: '' }]);
+  const [questions, setQuestions] = useState([{ question: ''}]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -29,9 +29,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
         const response = await axios.get(`${base_url}/getQuestionsByCourseId?courseId=${courseId}`);
         const existingQuestions = response.data.questions;
         setQuestions(existingQuestions.map(question => ({
-          question: question.text,
-          true: question.options.includes('true') ? 'true' : '',
-          false: question.options.includes('false') ? 'false' : ''
+          question: question.text
         })));
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -44,7 +42,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
   }, [courseId]);
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, { question: '', true: '', false: '' }]);
+    setQuestions([...questions, { question: ''}]);
   };
 
   const handleQuestionChange = (index, value) => {
@@ -53,23 +51,22 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
     setQuestions(newQuestions);
   };
 
-  const handleOptionChange = (index, optionType, value) => {
-    const newQuestions = [...questions];
-    if (optionType === 'true') {
-      newQuestions[index].true = value;
-    } else {
-      newQuestions[index].false = value;
-    }
-    setQuestions(newQuestions);
-  };
+  // const handleOptionChange = (index, optionType, value) => {
+  //   const newQuestions = [...questions];
+  //   if (optionType === 'true') {
+  //     newQuestions[index].true = value;
+  //   } else {
+  //     newQuestions[index].false = value;
+  //   }
+  //   setQuestions(newQuestions);
+  // };
 
   const handleSubmit = async () => {
     try {
       const payload = {
         courseId: courseId,
         questions: questions.map(({ question }) => ({
-          text: question,
-          options: ["true", "false"]
+          text: question
         }))
       };
   
@@ -80,7 +77,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
       console.log('Response from server:', response.data);
   
       // Clear form fields after successful submission
-      setQuestions([{ question: '', true: '', false: '' }]);
+      setQuestions([{ question: ''}]);
       onHide(response.data.message); 
     } catch (error) {
       console.error('Error adding questions:', error);
@@ -105,52 +102,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
   }
   return (
     <>
-      {/* {show && <div className="modal-backdrop fade show" style={{ zIndex: '1040' }}></div>}
-      <div className={`modal fade ${show ? 'show' : ''}`} tabIndex="-1" role="dialog" style={{ display: show ? 'block' : 'none', position: "absolute", left: "36%", top: "93%", height: "auto" }}>
-        <div className="modal-dialog modal-dialog-centered" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Add Question</h5>
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              {questions.map((question, index) => (
-                <div key={index}>
-                  <form>
-                    <div className="form-group">
-                      <label htmlFor={`question-${index}`}>Question</label>
-                      <input type="text" className="form-control" id={`question-${index}`} value={question.question} onChange={(e) => handleQuestionChange(index, e.target.value)} />
-                    </div>
-                    <div className="form-group">
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.true === 'true'} onChange={() => handleOptionChange(index, 'true', 'true')} />
-                        <label className="form-check-label" htmlFor={`true-${index}`}>
-                          True
-                        </label>
-                      </div>
-                      <div className="form-check">
-                        <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.false === 'false'} onChange={() => handleOptionChange(index, 'false', 'false')} />
-                        <label className="form-check-label" htmlFor={`false-${index}`}>
-                          False
-                        </label>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              ))}
-              <button type="button" className="btn btn-primary" onClick={handleAddQuestion}>Add Question</button>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-primary" onClick={handleSubmit}>Add</button>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      
-      <div> 
-      
+      <div>       
       <Modal
         isOpen={modalIsOpen}
         style={customStyles}
@@ -160,7 +112,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content" style={{ padding: "13px"}}>
             <div className="modal-header mb-4" style={{ borderBottom: "1px solid #d5d5d5"}} >
-              <h5 className="modal-title mb-2">Add Question</h5>
+              <h5 className="modal-title mb-2"><b>Add Event Specific Questions</b></h5>
               <button type="button" style={{ top: "10px"}}className="close" data-dismiss="modal" aria-label="Close" onClick={closeQuestion}>
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -170,11 +122,13 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
               {questions.map((question, index) => (
                 <div key={index}>
                   <form>
-                    <div className="form-group">
-                      <label htmlFor={`question-${index}`}>Question</label>
+                    <div className="form-group" style={{display:"flex", justifyContent:"left", marginBottom:"10px"}}>
+                    <div style={{margin: "auto 10px auto auto"}}>
+                            {index+1}. 
+                            </div>
                       <input type="text" className="form-control" id={`question-${index}`} value={question.question} onChange={(e) => handleQuestionChange(index, e.target.value)} />
                     </div>
-                    <div className="form-group d-flex">
+                    {/* <div className="form-group d-flex">
                       <div className="form-check">
                         <input className="form-check-input" type="radio" name={`option-${index}`} checked={question.true === 'true'} onChange={() => handleOptionChange(index, 'true', 'true')} />
                         <label className="form-check-label ms-2" htmlFor={`true-${index}`}>
@@ -187,7 +141,7 @@ const AddQuestionModal = ({ courseId, addQuestion, show, onHide, closeQuestion }
                           False
                         </label>
                       </div>
-                    </div>
+                    </div> */}
                   </form>
                 </div>
               ))}

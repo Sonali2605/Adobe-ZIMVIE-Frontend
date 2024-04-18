@@ -59,10 +59,10 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
 
   return (
     <div className='justify-content-between' >
-    <div className="course-card card rounded-lg overflow-hidden flex flex-col" onClick={onClick}>
+    <div className="course-card card rounded-lg overflow-hidden" style= {{height:"360px"}}onClick={onClick}>
       <img
         className="course-image card-img-top"
-        style={{ height: "150px"}}
+        style={{ height: "180px", minHeight: "180px"}}
         src={course?.attributes?.imageUrl}
         alt={course?.attributes?.localizedMetadata[0]?.name || ""}
       />
@@ -80,7 +80,8 @@ const CourseCard = ({ course, EnrollHandle, login, onClick  }) => {
       )}
       <div className="card-body">
         <div className="font-bold text-xl cursor-pointer overflow-hidden"
-          style={{ maxHeight: '1.5em', whiteSpace: 'pre-wrap', textOverflow: 'ellipsis', fontWeight: "600" }}
+          style={{  whiteSpace: 'pre-wrap', textOverflow: 'ellipsis', fontWeight: "600", height: "50px"
+        }}
           title={course?.attributes?.localizedMetadata[0]?.name}>
           {course?.attributes?.localizedMetadata[0]?.name}
         </div>

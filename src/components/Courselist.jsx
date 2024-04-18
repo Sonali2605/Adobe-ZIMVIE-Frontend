@@ -6,6 +6,9 @@ import { clientId, clientSecreat, refreshToken, base_adobe_url,login_url } from 
 import AddQuestionModal from './AddQuestionModal ';
 import Modal from 'react-modal';
 import CourseQuestion from './CourseQuestion';
+import { base_url } from './AppConfig';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendar,faClock , faChair ,faLink,faChalkboardTeacher  } from '@fortawesome/free-solid-svg-icons';
 
 const customStyles = {
   content: {
@@ -20,8 +23,25 @@ const customStyles = {
   },
 };
 
+const customEventStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    border: 'none',
+    backgroundColor: 'none',
+    width: '100%', // Adjust the width as needed
+    maxWidth: '900px', // Set a maximum height for the modal content
+    padding: '20px', // Add padding for better spacing
+    borderRadius: '10px', // Add border radius for rounded corners
+  },
+};
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
+  const [coursesDetails, setCoursesDetails] = useState([]);
+  const [courseDetails, setCourseDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +52,9 @@ const CourseList = () => {
   const [selectedCourseId, setSelectedCourseId] = useState(null);
   const [selectedCourseName, setSelectedCourseName] = useState(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
   const [message, setMessage] = useState("");
+  const [buttontext, setButtonText] = useState("Enroll");
 
   const handleFilterChange = (filterOption) => {
     setSelectedFilter(filterOption);
@@ -96,10 +118,33 @@ const CourseList = () => {
         language = "en-US,fr-FR";
       }
       const response = await axios.get(
-        `https://learningmanager.adobe.com/primeapi/v2/learningObjects?page[limit]=20&filter.catalogIds=176038&sort=name&filter.learnerState=notenrolled&filter.ignoreEnhancedLP=true&language=${language}`,
+        `https://learningmanager.adobe.com/primeapi/v2/learningObjects?include=instances%2C%20instances.loResources%2Cinstances.loResources.resources&page[limit]10&filter.catalogIds=176038&sort=name&filter.learnerState=notenrolled&filter.ignoreEnhancedLP=true&language=${language}`,
         config
       );
       const result = response?.data?.data;
+      console.log("*************************", response.data.data)
+      let finalObj =[];
+      for(let i=0;i<response.data.data.length; i++){
+        let dataObj={};
+        const options = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        dataObj.id= response.data.data[i].id;
+        dataObj.courseName= response.data.data[i].attributes.localizedMetadata[0].name;
+        dataObj.courseDescription= response.data.data[i].attributes.localizedMetadata[0].description;
+        const instance = response.data.included.find((findData) => findData.type === 'learningObjectInstance' && findData?.id === response.data.data[i].relationships.instances?.data[0].id);
+        const loResources = response.data.included.find((findData) => findData.type === 'learningObjectResource' && findData?.id === instance.relationships.loResources?.data[0].id);
+        const resouces = response.data.included.find((findData) => findData.type === 'resource' && findData?.id === loResources.relationships.resources?.data[0].id);
+        console.log("++++++++++++++++++++++++++++++++++++", resouces);
+        dataObj.moduleName= loResources.attributes.localizedMetadata[0].name;
+        dataObj.moduleDescription= loResources.attributes.localizedMetadata[0].description;
+        dataObj.seatLimit= resouces.attributes.seatLimit;
+        dataObj.dateStart = new Date(resouces.attributes.dateStart).toLocaleDateString('en-US', options);
+        dataObj.desiredDuration = parseInt(resouces.attributes.desiredDuration)/3600;
+        dataObj.instructorNames =  resouces.attributes.instructorNames;
+        dataObj.location= resouces.attributes.location;
+        finalObj.push(dataObj);
+      }
+      console.log("3333333333333333333",finalObj)
+      setCoursesDetails(finalObj);
       setCourses(result);
     } catch (error) {
       console.error("Error fetching learning objects:", error);
@@ -138,11 +183,37 @@ const CourseList = () => {
     navigate('/');
   };
 
+  const checkUser = async (courseId)=>{
+    const response = await axios.get(`${base_url}/getUserQuestions?courseId=${courseId}&email=${localStorage.getItem("Useremail")}`);
+            console.log("&&&&&&&&&&&&&", response)
+            if(response.data.message ==="User data not found"){
+              setShowModal(true);
+            } else {
+              setMessage("Course already registered");
+              setShowSuccessModal(true);
+          }
+  }
+
+  const SetText = async (courseId)=>{
+    const response = await axios.get(`${base_url}/getUserQuestions?courseId=${courseId}&email=${localStorage.getItem("Useremail")}`);
+            console.log("&&&&&&&&&&&&&", response)
+            if(response.data.message ==="User data not found"){
+              setButtonText("Enroll")
+            } else {
+              setButtonText("Enrolled")
+          }
+  }
   const handleCardClick = (courseId, courseName) => {
+
     setSelectedCourseId(courseId); 
     setSelectedCourseName(courseName);
-    setShowModal(true);
+    setShowEventModal(true);
+    SetText(courseId);
+    const desiredCourses = coursesDetails.filter(course => course.id === courseId);
+    setCourseDetails(desiredCourses);
   };
+
+  
 
   const hideQuestionModal = (message) =>{
    setShowModal(false);
@@ -162,6 +233,16 @@ const CourseList = () => {
     setShowSuccessModal(false);
     setMessage("");
     window.location.reload();
+  }
+
+  const closeEventModal = () =>{
+    setShowEventModal(false);
+    if(localStorage.getItem("Useremail") !== undefined){
+      checkUser(selectedCourseId)
+        }  else {
+          setShowModal(true);
+        }
+   
   }
 
   return (
@@ -198,8 +279,8 @@ const CourseList = () => {
           />
         </div>
         {showModal && <CourseQuestion show={showModal} onHide={hideQuestionModal} closeQuestion={closeQuestion} courseId={selectedCourseId} courseName ={selectedCourseName} />}
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-  <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mx-8">
+        <div style={{ justifyContent: 'center' }}>
+  <div className="row row-cols-3 row-cols-sm-3 row-cols-md-3 row-cols-lg-4 g-4 mx-8">
     {/* Increase the value of g-* to increase the space between cards */}
     {filteredCourses.map((course) => (
       <div key={course.id} className="col mb-4">
@@ -232,6 +313,74 @@ const CourseList = () => {
         </div>
         </Modal>
       )}
+
+{showEventModal && (
+  <Modal
+    isOpen={true}
+    style={customEventStyles}
+    contentLabel="Example Modal"
+  >
+    <div className="modal-dialog modal-dialog-centered" role="document">
+      <div className="modal-content">
+        <div className="modal-header mb-4" style={{ borderBottom: '1px solid #d5d5d5' }}>
+          <h5 className="modal-title mb-2"><b>Course Event Details</b></h5>
+          <button type="button" style={{ top: '10px' }} className="close" data-dismiss="modal" aria-label="Close" onClick={() => setShowEventModal(false)}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div className="modal-body" style={{ maxHeight: 'calc(100vh - 200px)', overflowY: 'auto' }}>
+          <div className="modal-body-content">
+           {courseDetails && (
+  <div key={courseDetails[0].id} className="col mb-4">
+    <h4><b>{courseDetails[0].courseName}</b></h4>
+    <p className='mt-4'>{courseDetails[0].courseDescription}</p>
+    <div style={{ border: '1px solid rgb(23, 33, 66)', padding: '10px', borderRadius: '5px', fontSize: '13px', color: 'rgb(23, 33, 66)' }}>
+    <p  style={{fontSize:"14px"}}><b>{courseDetails[0].moduleName}</b></p>
+                  <p>{courseDetails[0].moduleDescription}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+        <div style={{ width: '50%',display: 'flex' }}>
+          <FontAwesomeIcon icon={faCalendar} style={{ marginRight: '5px', marginTop: '2px', color: 'rgb(23, 33, 66)' }} />
+          <p>{courseDetails[0].dateStart}</p>
+        </div>
+        <div style={{width: '50%',display: 'flex'}}>
+                  <FontAwesomeIcon icon={faClock } style={{marginRight:"5px",marginTop:"2px",color:"rgb(23, 33, 66)"}}/>
+                  <p>{courseDetails[0].desiredDuration} hour duration</p>
+                  </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+      <div style={{ width: '50%',display: 'flex' }}>
+          <FontAwesomeIcon icon={faChair} style={{ marginRight: '5px', marginTop: '2px', color: 'rgb(23, 33, 66)' }} />
+          <p>{courseDetails[0].seatLimit} Seat limit</p>
+        </div>
+        <div style={{ width: '50%',display: 'flex' }}>
+          <FontAwesomeIcon icon={faChalkboardTeacher} style={{ marginRight: '5px', marginTop: '2px', color: 'rgb(23, 33, 66)' }} />
+          <p>{courseDetails[0].instructorNames[0]}</p>
+        </div>
+      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
+        <div style={{ width: '50%',display: 'flex' }}>
+          <FontAwesomeIcon icon={faLink} style={{ marginRight: '5px', marginTop: '2px', color: 'rgb(23, 33, 66)' }} />
+          <p>Link- <a href={courseDetails[0].location}>{courseDetails[0].location}</a></p>
+        </div>
+        <div style={{ width: '50%' }}>
+          {/* Add other elements here */}
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+            <h3></h3>
+          </div>
+        </div>
+        <div className="modal-footer justify-content-center">
+          <button style={{ borderRadius: '25px', width: '40%', background: '#172142', color: 'white' }} type="button" className="btn text-center" onClick={closeEventModal}>{buttontext}</button>
+        </div>
+      </div>
+    </div>
+  </Modal>
+)}
+
     </>
   );
 };
