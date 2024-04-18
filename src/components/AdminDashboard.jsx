@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             <Header />
             <div className="container" id='admin-dashboard'>
                 <div className="d-flex justify-content-between align-items-center mb-3">
-                    <h2 className="mb-0">Admin Dashboard</h2>
+                <h2 style={{color: '#333', fontSize: '22px', marginTop: '0', fontWeight: "600"}}>Admin Dashboard</h2>
                     <Button variant="success" onClick={exportToExcel} style={{
                 width: "auto",
                 backgroundColor: "transparent",

@@ -38,7 +38,7 @@ const customEventStyles = {
     borderRadius: '10px', // Add border radius for rounded corners
   },
 };
-const CourseList = () => {
+const LearningList = () => {
   const [courses, setCourses] = useState([]);
   const [coursesDetails, setCoursesDetails] = useState([]);
   const [courseDetails, setCourseDetails] = useState([]);
@@ -108,12 +108,12 @@ const CourseList = () => {
     
     let enrolledCourses =[];
     try {
-      if(localStorage.getItem("isLogin")){
-      const responseData = await axios.get(`${base_url}/getUserDetails?email=${localStorage.getItem("Useremail")}`);
+        if(localStorage.getItem("isLogin")){
+        const responseData = await axios.get(`${base_url}/getUserDetails?email=${localStorage.getItem("Useremail")}`);
       if(responseData.data.courseIds && responseData.data.courseIds.length){    
         enrolledCourses =  responseData.data.courseIds ;
-      }
-    }
+      }}
+      
       console.log("enrolled courses", enrolledCourses)
       let token = localStorage.getItem("Learnertoken");
       const config = {
@@ -132,7 +132,7 @@ const CourseList = () => {
       );
       let result = response?.data?.data;
       if (enrolledCourses.length !== 0) {
-        result = result.filter(course => !enrolledCourses.includes(course.id));
+        result = result.filter(course => enrolledCourses.includes(course.id));
       }
       let finalObj =[];
       for(let i=0;i<result.length; i++){
@@ -277,7 +277,7 @@ const CourseList = () => {
           {login ?
             <span className="text-2xl font-bold mb-4" style={{width: "80%"}}> Welcome To 3Ds Learning Portal</span>
             :
-            <span className="text-2xl font-bold" style={{width: "80%", fontSize: "20px", fontWeight: "600", marginLeft: "-3%"}} >All Courses</span>
+            <span className="text-2xl font-bold" style={{width: "80%", fontSize: "20px", fontWeight: "600", marginLeft: "-3%"}} >My Learnings</span>
           }
 
           <input
@@ -396,4 +396,4 @@ const CourseList = () => {
   );
 };
 
-export default CourseList;
+export default LearningList;

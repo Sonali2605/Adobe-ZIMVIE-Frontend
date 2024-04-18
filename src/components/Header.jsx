@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import logo from '/logo.png'; // Replace './logo.png' with the path to your logo image file
+import logo from '/logo.svg'; // Replace './logo.png' with the path to your logo image file
 
 import { base_url } from './AppConfig';
 
@@ -130,7 +130,7 @@ const headerStyle = {
 };
 
 const logoStyle = {
-  width: '120px', // Adjust the width as needed
+  width: '90px', // Adjust the width as needed
   height: 'auto', // Maintain aspect ratio
   marginRight: '1rem',
 };
